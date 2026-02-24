@@ -2,12 +2,7 @@ const STORAGE_KEY = "responsiveInvoiceDataV1";
 
 const itemsBody = document.getElementById("itemsBody");
 const addItemBtn = document.getElementById("addItemBtn");
-const taxInput = document.getElementById("taxInput");
-const discountInput = document.getElementById("discountInput");
-const currencyInput = document.getElementById("currencyInput");
 const subtotalValue = document.getElementById("subtotalValue");
-const taxValue = document.getElementById("taxValue");
-const discountValue = document.getElementById("discountValue");
 const totalValue = document.getElementById("totalValue");
 const invoiceDate = document.getElementById("invoiceDate");
 const dueDate = document.getElementById("dueDate");
@@ -80,8 +75,7 @@ function formatNumberId(amount) {
 }
 
 function formatMoney(amount) {
-  const currency = (currencyInput.value || "Rp.").trim() || "Rp.";
-  return `${currency} ${formatNumberId(amount)}`;
+  return `Rp. ${formatNumberId(amount)}`;
 }
 
 function generateInvoiceNumber(dateValue = "") {
@@ -200,15 +194,8 @@ function recalculate() {
     row.querySelector(".row-total").textContent = formatMoney(lineTotal);
   });
 
-  const taxPercent = parseNumber(taxInput.value);
-  const discount = parseNumber(discountInput.value);
-  const tax = (subtotal * taxPercent) / 100;
-  const total = Math.max(subtotal + tax - discount, 0);
-
   subtotalValue.textContent = formatMoney(subtotal);
-  taxValue.textContent = formatMoney(tax);
-  discountValue.textContent = `-${formatMoney(discount)}`;
-  totalValue.textContent = formatMoney(total);
+  totalValue.textContent = formatMoney(subtotal);
 }
 
 function toDateInputValue(date) {
@@ -228,9 +215,6 @@ function buildDefaultInvoiceData() {
     fromBlock: "Perusahaan Anda\nAlamat Jalan\nKota, Indonesia\nhalo@perusahaan.com",
     toBlock: "Nama Klien\nPerusahaan Klien\nAlamat Klien\nemail@klien.com",
     notes: "Terima kasih atas kerja samanya.",
-    taxPercent: 10,
-    discount: 0,
-    currency: "Rp.",
     logoData: "",
     items: [
       { description: "Desain website", qty: 1, price: 6800000 },
@@ -251,9 +235,6 @@ function applyInvoiceData(data) {
   fromBlock.value = String(data.fromBlock || "");
   toBlock.value = String(data.toBlock || "");
   notesBlock.value = String(data.notes || "");
-  taxInput.value = String(parseNumber(data.taxPercent));
-  discountInput.value = String(parseNumber(data.discount));
-  currencyInput.value = String(data.currency || "Rp.");
 
   clearRows();
   const safeItems = Array.isArray(data.items) && data.items.length > 0
@@ -292,9 +273,6 @@ function getInvoiceData() {
     fromBlock: fromBlock.value,
     toBlock: toBlock.value,
     notes: notesBlock.value,
-    taxPercent: parseNumber(taxInput.value),
-    discount: parseNumber(discountInput.value),
-    currency: currencyInput.value || "Rp.",
     logoData: currentLogoData,
     items: collectItems()
   };
@@ -353,7 +331,7 @@ function resetTemplate() {
   setStatus("Template berhasil direset.");
 }
 
-function buildOutputMarkup() {
+function buildOutputMarkup(forExport = false) {
   const markup = document.querySelector(".invoice-card").cloneNode(true);
 
   const actions = markup.querySelector(".invoice-actions");
@@ -370,11 +348,31 @@ function buildOutputMarkup() {
     button.remove();
   });
 
+  if (forExport) {
+    markup.classList.add("export-card");
+  }
+
   return markup;
 }
 
+function applyExportScale(markup) {
+  const a4PortraitHeightPx = 1122;
+  const safetyPaddingPx = 60;
+  const targetHeight = a4PortraitHeightPx - safetyPaddingPx;
+  const measuredHeight = markup.scrollHeight;
+
+  if (!measuredHeight || measuredHeight <= targetHeight) {
+    markup.style.setProperty("--export-scale", "1");
+    return;
+  }
+
+  const computedScale = targetHeight / measuredHeight;
+  const clampedScale = Math.max(0.72, Math.min(1, computedScale));
+  markup.style.setProperty("--export-scale", clampedScale.toFixed(3));
+}
+
 function openPreview() {
-  const previewMarkup = buildOutputMarkup();
+  const previewMarkup = buildOutputMarkup(false);
 
   previewContainer.innerHTML = "";
   previewContainer.appendChild(previewMarkup);
@@ -406,13 +404,6 @@ logoInput.addEventListener("change", (event) => {
   reader.readAsDataURL(file);
 });
 
-[taxInput, discountInput, currencyInput].forEach((input) => {
-  input.addEventListener("input", () => {
-    recalculate();
-    queueAutosave();
-  });
-});
-
 invoiceDate.addEventListener("change", () => {
   invoiceNo.value = generateInvoiceNumber(invoiceDate.value);
   setStatus("Nomor faktur dibuat otomatis.");
@@ -430,7 +421,12 @@ closePreviewBtn.addEventListener("click", closePreview);
 previewBackdrop.addEventListener("click", closePreview);
 
 exportPdfBtn.addEventListener("click", () => {
-  closePreview();
+  const exportMarkup = buildOutputMarkup(true);
+  previewContainer.innerHTML = "";
+  previewContainer.appendChild(exportMarkup);
+  previewModal.hidden = false;
+
+  applyExportScale(exportMarkup);
   document.body.classList.add("export-print");
 
   const handleAfterPrint = () => {
@@ -441,7 +437,7 @@ exportPdfBtn.addEventListener("click", () => {
 
   const handleFocusReturn = () => {
     window.setTimeout(() => {
-      if (document.body.classList.contains("print-mode")) {
+      if (document.body.classList.contains("export-print")) {
         cleanupPrintMode();
         window.removeEventListener("afterprint", handleAfterPrint);
       }

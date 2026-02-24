@@ -251,13 +251,9 @@ td input {
 
 .summary {
   margin-top: 1.2rem;
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr;
-  align-items: start;
+  display: block;
 }
 
-.summary-controls,
 .totals {
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -366,7 +362,7 @@ td input {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 8mm;
+    margin: 6mm;
   }
 
   *,
@@ -378,135 +374,116 @@ td input {
 
   html,
   body {
-    background: #fff;
-    font-size: 11px;
-    line-height: 1.2;
+    background: #ffffff;
     margin: 0;
   }
 
-  body.export-print .preview-modal {
+  body.export-print .invoice-shell {
     display: none;
   }
 
-  .invoice-shell {
-    padding: 0;
+  body.export-print .preview-modal {
+    position: static;
+    inset: auto;
     display: block;
+    background: #ffffff;
   }
 
-  .invoice-card {
-    background: #ffffff;
-    box-shadow: none;
+  body.export-print .preview-backdrop,
+  body.export-print .preview-header {
+    display: none;
+  }
+
+  body.export-print .preview-panel {
+    width: 100%;
+    max-height: none;
+    margin: 0;
     border: 0;
     border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  body.export-print .preview-container {
+    padding: 0;
+  }
+
+  body.export-print .preview-container .invoice-card {
     width: 100%;
-    padding: 8px;
-    animation: none;
-    break-inside: avoid;
-    page-break-inside: avoid;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0;
   }
 
-  .invoice-header {
-    gap: 0.5rem;
-    padding-bottom: 0.5rem;
+  body.export-print .preview-container .invoice-card.export-card {
+    --export-scale: 1;
+    zoom: var(--export-scale);
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #d9e1eb;
+    border-radius: 0;
+    font-size: 0.92rem;
+    color: #18222f;
+    box-shadow: none;
+    background: #ffffff;
+    filter: none;
+    opacity: 1;
   }
 
-  .logo-box {
-    width: 56px;
-    height: 56px;
-    border-radius: 8px;
-    border: 1px solid #8cb6ad;
-    background: linear-gradient(180deg, #f4fbf9 0%, #e8f4ef 100%);
+  body.export-print .preview-container .invoice-card.export-card .invoice-header {
+    gap: 0.6rem;
+    padding-bottom: 0.6rem;
   }
 
-  .header-fields h1 {
-    font-size: 1.25rem;
-    margin-bottom: 0.25rem;
+  body.export-print .preview-container .invoice-card.export-card .logo-box {
+    width: 68px;
+    height: 68px;
+    background: #ffffff;
+    border: 1px solid #d9e1eb;
   }
 
-  .inline-pair {
-    margin-bottom: 0.12rem;
-    gap: 0.3rem;
+  body.export-print .preview-container .invoice-card.export-card .parties,
+  body.export-print .preview-container .invoice-card.export-card .summary,
+  body.export-print .preview-container .invoice-card.export-card .notes,
+  body.export-print .preview-container .invoice-card.export-card .items {
+    margin-top: 0.55rem;
   }
 
-  input,
-  textarea {
-    padding: 0.25rem 0.35rem;
-    border-radius: 6px;
+  body.export-print .preview-container .invoice-card.export-card th,
+  body.export-print .preview-container .invoice-card.export-card td {
+    padding: 0.28rem;
   }
 
-  .parties,
-  .summary {
-    gap: 0.45rem;
-    margin-top: 0.45rem;
-    grid-template-columns: 1fr 1fr;
+  body.export-print .preview-container .invoice-card.export-card .notes {
+    margin-top: 0.55rem;
   }
 
-  .parties article,
-  .summary-controls,
-  .totals,
-  .table-wrap {
-    background: #f8fbff;
-    border: 1px solid #d7e2ef;
-    border-radius: 8px;
-    padding: 0.45rem;
+  body.export-print .preview-container .invoice-card.export-card .notes textarea {
+    min-height: 42px;
+    max-height: 52px;
   }
 
-  th {
-    background: #edf4f2;
-    color: #36535f;
+  body.export-print .preview-container .invoice-card.export-card .parties article,
+  body.export-print .preview-container .invoice-card.export-card .totals,
+  body.export-print .preview-container .invoice-card.export-card .table-wrap {
+    background: #ffffff;
+    border: 1px solid #d9e1eb;
+    box-shadow: none;
   }
 
-  .grand {
-    background: #e8f4ef;
+  body.export-print .preview-container .invoice-card.export-card th {
+    background: #f4f7fb;
+    color: #33485e;
   }
 
-  h2 {
-    font-size: 0.88rem;
-    margin-bottom: 0.3rem;
+  body.export-print .preview-container .invoice-card.export-card .grand {
+    background: #ffffff;
   }
 
-  .items,
-  .notes {
-    margin-top: 0.45rem;
-  }
-
-  .items-head {
-    margin-bottom: 0.3rem;
-  }
-
-  table {
-    min-width: 0;
-  }
-
-  th,
-  td {
-    padding: 0.25rem 0.3rem;
-    font-size: 0.82rem;
-  }
-
-  .row-total {
-    min-width: 72px;
-  }
-
-  .totals div {
-    margin-bottom: 0.2rem;
-  }
-
-  .grand {
-    padding-top: 0.35rem;
-    font-size: 0.98rem;
-  }
-
-  textarea {
-    min-height: 56px;
-    max-height: 64px;
+  body.export-print .preview-container .invoice-card.export-card textarea {
+    min-height: 48px;
+    max-height: 60px;
     resize: none;
-  }
-
-  .invoice-actions,
-  .logo-upload,
-  .remove-item,
-  #addItemBtn {
-    display: none;
   }
 }
