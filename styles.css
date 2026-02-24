@@ -1,0 +1,512 @@
+:root {
+  --bg-start: #f4f8ff;
+  --bg-end: #eef4ec;
+  --card: #ffffff;
+  --ink: #18222f;
+  --muted: #617084;
+  --primary: #0a7f6d;
+  --primary-soft: #d9f3ee;
+  --line: #dde5ef;
+  --danger: #c03848;
+  --danger-soft: #ffe6ea;
+  --shadow: 0 24px 60px rgba(19, 46, 76, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Outfit", sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at 10% 20%, #ffffff 0%, transparent 40%),
+    linear-gradient(135deg, var(--bg-start), var(--bg-end));
+}
+
+.invoice-shell {
+  padding: 2rem 1rem 3rem;
+  display: grid;
+  place-items: center;
+}
+
+.invoice-card {
+  width: min(980px, 100%);
+  background: var(--card);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  border: 1px solid #eff4fb;
+  animation: rise 0.5s ease;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.invoice-header {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-box {
+  width: 86px;
+  height: 86px;
+  border-radius: 14px;
+  border: 1px dashed #8cb6ad;
+  background: linear-gradient(180deg, #f4fbf9 0%, #eef7f4 100%);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: #4d7169;
+  font-weight: 600;
+}
+
+.logo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.logo-upload,
+button {
+  border: 0;
+  background: var(--primary-soft);
+  color: var(--primary);
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.2s ease;
+}
+
+.logo-upload:hover,
+button:hover {
+  transform: translateY(-1px);
+  filter: brightness(0.96);
+}
+
+.header-fields h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.7rem, 5vw, 2.2rem);
+  outline: none;
+}
+
+.invoice-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-danger-soft {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+#saveStatus {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.inline-pair {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+label {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+input,
+textarea {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.5rem 0.65rem;
+  font: inherit;
+  color: var(--ink);
+  background: #fff;
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px solid #bde6de;
+  border-color: #92d2c4;
+}
+
+.inline-pair input {
+  width: min(220px, 65%);
+}
+
+.parties {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  margin-top: 1rem;
+}
+
+.parties article {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.75rem;
+}
+
+h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+textarea {
+  width: 100%;
+  min-height: 94px;
+  resize: vertical;
+}
+
+.items {
+  margin-top: 1.2rem;
+}
+
+.items-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.55rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 560px;
+}
+
+th,
+td {
+  padding: 0.55rem;
+  text-align: left;
+  border-bottom: 1px solid #edf2f7;
+}
+
+th {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+td input {
+  width: 100%;
+}
+
+.qty,
+.price {
+  width: 94px;
+}
+
+.row-total {
+  min-width: 100px;
+  font-weight: 600;
+}
+
+.remove-item {
+  background: #ffe9ec;
+  color: var(--danger);
+  padding: 0.4rem 0.65rem;
+}
+
+.summary {
+  margin-top: 1.2rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+.summary-controls,
+.totals {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.85rem;
+}
+
+.totals div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.totals div:last-child {
+  margin-bottom: 0;
+}
+
+.grand {
+  border-top: 1px solid var(--line);
+  padding-top: 0.65rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.notes {
+  margin-top: 1.2rem;
+}
+
+.preview-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+.preview-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 25, 40, 0.5);
+}
+
+.preview-panel {
+  position: relative;
+  width: min(1000px, calc(100% - 2rem));
+  max-height: calc(100vh - 2rem);
+  margin: 1rem auto;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: auto;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--line);
+}
+
+.preview-header {
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.preview-header h2 {
+  margin: 0;
+}
+
+.preview-container {
+  padding: 1rem;
+}
+
+.preview-container .invoice-card {
+  width: 100%;
+  box-shadow: none;
+  border: 1px solid var(--line);
+}
+
+.preview-container .invoice-actions,
+.preview-container #addItemBtn,
+.preview-container .remove-item,
+.preview-container .logo-upload {
+  display: none;
+}
+
+.preview-container input,
+.preview-container textarea,
+.preview-container [contenteditable="true"] {
+  pointer-events: none;
+}
+
+@media (min-width: 780px) {
+  .invoice-card {
+    padding: 1.7rem;
+  }
+
+  .invoice-header {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .parties,
+  .summary {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  html,
+  body {
+    background: #fff;
+    font-size: 11px;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  body.export-print .preview-modal {
+    display: none;
+  }
+
+  .invoice-shell {
+    padding: 0;
+    display: block;
+  }
+
+  .invoice-card {
+    background: #ffffff;
+    box-shadow: none;
+    border: 0;
+    border-radius: 0;
+    width: 100%;
+    padding: 8px;
+    animation: none;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .invoice-header {
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .logo-box {
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    border: 1px solid #8cb6ad;
+    background: linear-gradient(180deg, #f4fbf9 0%, #e8f4ef 100%);
+  }
+
+  .header-fields h1 {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .inline-pair {
+    margin-bottom: 0.12rem;
+    gap: 0.3rem;
+  }
+
+  input,
+  textarea {
+    padding: 0.25rem 0.35rem;
+    border-radius: 6px;
+  }
+
+  .parties,
+  .summary {
+    gap: 0.45rem;
+    margin-top: 0.45rem;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .parties article,
+  .summary-controls,
+  .totals,
+  .table-wrap {
+    background: #f8fbff;
+    border: 1px solid #d7e2ef;
+    border-radius: 8px;
+    padding: 0.45rem;
+  }
+
+  th {
+    background: #edf4f2;
+    color: #36535f;
+  }
+
+  .grand {
+    background: #e8f4ef;
+  }
+
+  h2 {
+    font-size: 0.88rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .items,
+  .notes {
+    margin-top: 0.45rem;
+  }
+
+  .items-head {
+    margin-bottom: 0.3rem;
+  }
+
+  table {
+    min-width: 0;
+  }
+
+  th,
+  td {
+    padding: 0.25rem 0.3rem;
+    font-size: 0.82rem;
+  }
+
+  .row-total {
+    min-width: 72px;
+  }
+
+  .totals div {
+    margin-bottom: 0.2rem;
+  }
+
+  .grand {
+    padding-top: 0.35rem;
+    font-size: 0.98rem;
+  }
+
+  textarea {
+    min-height: 56px;
+    max-height: 64px;
+    resize: none;
+  }
+
+  .invoice-actions,
+  .logo-upload,
+  .remove-item,
+  #addItemBtn {
+    display: none;
+  }
+}

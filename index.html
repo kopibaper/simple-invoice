@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invoice Responsif</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="invoice-shell">
+    <section class="invoice-card">
+      <header class="invoice-header">
+        <div class="brand">
+          <div class="logo-box" id="logoPreview" aria-label="Pratinjau logo">
+            <span>LOGO</span>
+          </div>
+          <label class="logo-upload" for="logoInput">Unggah Logo</label>
+          <input id="logoInput" type="file" accept="image/*" hidden />
+        </div>
+
+        <div class="header-fields">
+          <h1 id="invoiceTitle" contenteditable="true" spellcheck="false">Faktur</h1>
+          <div class="inline-pair">
+            <label for="invoiceNo">No. Faktur</label>
+            <input id="invoiceNo" type="text" value="Otomatis" readonly />
+          </div>
+          <div class="inline-pair">
+            <label for="invoiceDate">Tanggal</label>
+            <input id="invoiceDate" type="date" />
+          </div>
+          <div class="inline-pair">
+            <label for="dueDate">Jatuh Tempo</label>
+            <input id="dueDate" type="date" />
+          </div>
+        </div>
+      </header>
+
+      <section class="invoice-actions" aria-label="Aksi faktur">
+        <button id="previewBtn" type="button">Pratinjau</button>
+        <button id="exportPdfBtn" type="button" class="btn-primary">Ekspor PDF</button>
+        <button id="saveInvoiceBtn" type="button">Simpan</button>
+        <button id="loadInvoiceBtn" type="button">Muat</button>
+        <button id="resetTemplateBtn" type="button" class="btn-danger-soft">Reset Templat</button>
+        <p id="saveStatus" aria-live="polite"></p>
+      </section>
+
+      <section class="parties">
+        <article>
+          <h2>Dari</h2>
+          <textarea id="fromBlock">Perusahaan Anda
+Alamat Jalan
+Kota, Indonesia
+halo@perusahaan.com</textarea>
+        </article>
+        <article>
+          <h2>Kepada</h2>
+          <textarea id="toBlock">Nama Klien
+Perusahaan Klien
+Alamat Klien
+email@klien.com</textarea>
+        </article>
+      </section>
+
+      <section class="items">
+        <div class="items-head">
+          <h2>Item</h2>
+          <button id="addItemBtn" type="button">+ Tambah Item</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Deskripsi</th>
+                <th>Jumlah</th>
+                <th>Harga</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="itemsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="summary">
+        <div class="summary-controls">
+          <div class="inline-pair">
+            <label for="taxInput">Pajak %</label>
+            <input id="taxInput" type="number" min="0" step="0.1" value="10" />
+          </div>
+          <div class="inline-pair">
+            <label for="discountInput">Diskon</label>
+            <input id="discountInput" type="number" min="0" step="0.01" value="0" />
+          </div>
+          <div class="inline-pair">
+            <label for="currencyInput">Mata Uang</label>
+            <input id="currencyInput" type="text" value="Rp." maxlength="6" />
+          </div>
+        </div>
+
+        <dl class="totals">
+          <div>
+            <dt>Subtotal</dt>
+            <dd id="subtotalValue">Rp. 0,00</dd>
+          </div>
+          <div>
+            <dt>Pajak</dt>
+            <dd id="taxValue">Rp. 0,00</dd>
+          </div>
+          <div>
+            <dt>Diskon</dt>
+            <dd id="discountValue">-Rp. 0,00</dd>
+          </div>
+          <div class="grand">
+            <dt>Total</dt>
+            <dd id="totalValue">Rp. 0,00</dd>
+          </div>
+        </dl>
+      </section>
+
+      <footer class="notes">
+        <h2>Catatan</h2>
+        <textarea id="notesBlock">Terima kasih atas kerja samanya.</textarea>
+      </footer>
+    </section>
+  </main>
+
+  <section id="previewModal" class="preview-modal" hidden aria-label="Pratinjau faktur">
+    <div class="preview-backdrop" id="previewBackdrop"></div>
+    <article class="preview-panel" role="dialog" aria-modal="true" aria-labelledby="previewHeading">
+      <header class="preview-header">
+        <h2 id="previewHeading">Pratinjau Faktur</h2>
+        <button id="closePreviewBtn" type="button" class="btn-danger-soft">Tutup</button>
+      </header>
+      <div id="previewContainer" class="preview-container"></div>
+    </article>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
