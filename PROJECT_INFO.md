@@ -10,12 +10,11 @@
 ## Fitur Utama
 - Edit data faktur langsung di halaman (judul, nomor, tanggal, jatuh tempo).
 - Upload logo perusahaan dengan preview langsung.
-- Kelola item dinamis: tambah, edit, hapus item; total dihitung otomatis.
+- Kelola item dinamis: tambah, edit, hapus item; subtotal dan total dihitung otomatis.
 - Format tampilan harga/total: `Rp. 300.000,00`.
-- Kontrol ringkasan: pajak %, diskon, mata uang kustom.
 - Aksi dokumen:
   - `Pratinjau` membuka modal pratinjau di halaman yang sama (tanpa popup).
-  - `Ekspor PDF` menggunakan dialog print browser (`window.print`).
+  - `Ekspor PDF` menggunakan dialog print browser (`window.print`) dari layout pratinjau.
   - `Simpan` menyimpan data ke `localStorage`.
   - `Muat` memuat data dari `localStorage`.
   - `Reset Templat` mengembalikan template default.
@@ -33,7 +32,6 @@
   - informasi header faktur
   - data pihak pengirim/penerima
   - daftar item
-  - pajak, diskon, mata uang
   - catatan
   - data logo (base64)
 
@@ -44,4 +42,4 @@
 ## Catatan Untuk Agent Berikutnya
 - Jika mengubah format data simpanan, pertimbangkan migrasi versi key `localStorage`.
 - Pratinjau dirender dari salinan `.invoice-card` ke modal `#previewModal`.
-- Untuk format Rupiah dengan pemisah ribuan, peningkatan paling aman adalah menambah formatter lokal di `script.js` pada fungsi `formatMoney`.
+- Ekspor PDF menggunakan mode `export-print` dan mencetak dari kontainer pratinjau agar hasil konsisten dengan tampilan preview.
